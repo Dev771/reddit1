@@ -1,5 +1,5 @@
 import * as api from '../api/index';
-import { CREATE_POST, FETCH_ALL } from '../constants/index';
+import { CREATE_POST, FETCH_ALL, LIKE_POST } from '../constants/index';
 
 export const getPost = () => async (dispatch) => {
     try {
@@ -7,7 +7,7 @@ export const getPost = () => async (dispatch) => {
 
         dispatch({type: FETCH_ALL, payload: data});
     } catch (error) {
-        console.log(error);
+        console.log(error.response.data);
     }
 }
 
@@ -21,9 +21,11 @@ export const createPost = (post) => async (dispatch) => {
     }
 }
 
-export const likePost = () => async (dispatch) => {
+export const likePost = (id, state) => async (dispatch) => {
     try {
-        const { data } = await api.likePost();
+        const { data } = await api.likePost(id, state);
+
+        dispatch({type: LIKE_POST, payload: data});
     } catch (error) {
         console.log(error);
     }

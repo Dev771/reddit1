@@ -4,3 +4,6 @@ export const LIKE_POST = 'LIKE_POST';
 
 export const FETCH_ALL_TAGS = 'FETCH_ALL_TAGS';
 export const CREATE_TAG = 'CREATE_TAG';
+
+export const AUTH = 'AUTH';
+export const LOGOUT = 'LOGOUT';

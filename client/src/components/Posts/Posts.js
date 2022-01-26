@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DefaultProfilePic from '../assets/ReditDefaultProfile.png';
 import { useDispatch } from 'react-redux';
 
@@ -6,42 +6,70 @@ import { likePost } from '../../actions/posts';
 import {ArrowUpwardOutlined, ArrowDownwardOutlined, BookmarkBorderOutlined } from '@material-ui/icons';
 import CommentIcon from '@material-ui/icons/CommentOutlined';
 import { Share } from '@material-ui/icons';
+import { Player } from 'video-react';
 
 const Posts = ({post}) => {
     const dispatch = useDispatch();
     const [isLiked, setisLiked] = useState(false);
     const [isDisliked, setIsDisLiked] = useState(false);
+    const user = JSON.parse(localStorage.getItem('profile'));
+    const [muted, setMuted] = useState(true);
     
     const isLike = (state) => {
         if(state === 'liked') {
             setisLiked(!isLiked);
             setIsDisLiked(false);
-            dispatch(likePost(post._id, 'like'));
+            dispatch(likePost(post._id, state));
         } else {
-            setIsDisLiked(!isDisliked);
             setisLiked(false);
-            post.like--;
+            setIsDisLiked(!isDisliked);
+            dispatch(likePost(post._id, state));
         }
     }
+
+    const mutedchange = () => {
+        setMuted(!muted);
+    }
+
+    useEffect(() => {
+        if(post.likes.find((like) => like === (user?.result?.googleId || user?.result?._id))) {
+            setIsDisLiked(false);
+            setisLiked(true);
+        } else if(post.dislikes.find((dislike) => dislike === (user?.result?.googleId || user?.result?._id))) {
+            setIsDisLiked(true);
+            setisLiked(false);
+        }
+    }, [post.dislikes, post.likes, user?.result?._id, user?.result?.googleId]);
 
     return (
         <div className='Post'>
             <div className='Vote'>
                 <ArrowUpwardOutlined color={!isLiked ? 'inherit' : 'secondary'} onClick={() => isLike('liked')} />
-                {post.likes}
-                <ArrowDownwardOutlined color={!isDisliked ? 'inherit' : 'secondary'} onClick={() => {setIsDisLiked(!isDisliked); setisLiked(false);}} /> 
+                {post.likes.length - post.dislikes.length}
+                <ArrowDownwardOutlined color={!isDisliked ? 'inherit' : 'secondary'} onClick={() => isLike('disliked')} /> 
             </div>
             <div className='ActualPost'>
                 <div>
                     <img src={DefaultProfilePic} alt='ProfilePic' className='profilePic' />
                     <label className='Tag'>{post.tags_name}/{post.tags_type}</label>
-                    <label className='Date_Of_Post'>Posted On ......</label>
+                    <label className='Date_Of_Post'>Posted by u/{post.creator} ......</label>
                 </div>
                 <div className='title'>
                     {post.title}
                 </div>
                 <div className='PostDetails'>
-                    <img src={post.LocImage} alt={post.title} />
+                    {post.LocImage.split('/')[0] === 'data:image' ? (
+                        <img src={post.LocImage} alt={post.title} />
+                    ) : post.LocImage.split('/')[0] === 'data:video' ? (
+                        <>
+                            <video width="100%" height='100%' autoPlay={true} muted={muted} loop>
+                                <source src={post.LocImage} type={post.LocImage.split(':')[1].split(';')[0]} />
+                            </video>
+                            <button onClick={mutedchange}>Muted</button>
+                        </>
+                    ) : (
+                        <label>Text</label>
+                    )}
                 </div>
                 <div className='PostAction'>
                     <span><CommentIcon /> 24 Comments</span>

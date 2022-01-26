@@ -4,6 +4,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import postRoutes from './router/postRoutes.js';
 import tagRoutes from './router/tagRoutes.js';
+import userRoutes from './router/userRoutes.js';
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(cors());
 
 app.use('/posts', postRoutes);
 app.use('/tag', tagRoutes);
+app.use('/users', userRoutes);
 
 const PORT = process.env.PORT || 8080;
 const ConnectionURL = "mongodb+srv://Dev771:763200%40De@cluster0.3i0ib.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";

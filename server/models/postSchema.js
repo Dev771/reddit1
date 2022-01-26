@@ -2,13 +2,18 @@ import mongoose from 'mongoose';
 
 const postSchema = mongoose.Schema({
     title: String,
-    UserId: String,
-    UserEmail: String,
+    creatorId: String,
+    creator: String,
+    creatorEmail: String,
     tags_name: String,
     tags_type: String,
     likes: {
-        type: Number,
-        default: 0,
+        type: [String],
+        default: [],
+    },
+    dislikes: {
+        type: [String],
+        default: [],
     },
     Subject: String,
     Country: String,

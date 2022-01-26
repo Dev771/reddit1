@@ -1,0 +1,164 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500&display=swap');
+
+.createForm {
+    display: grid;
+    margin: 3em;
+    margin-left: 10em;
+    margin-right: 10em;
+    /* flex-wrap: wrap; */
+    gap: 10px;
+    grid-template-columns: auto 30vw;
+}
+
+.createForm > form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.createForm > form > .CreatePostTop {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 1.3em;
+    color: #D7DADC;
+    font-family: 'IBM Plex Sans', sans-serif;
+}
+
+.createForm > form > .chooseTag {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.createForm > form > .chooseTag > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 8px;
+    width: fit-content;
+}
+
+.createForm > form > .chooseTag > div > label {
+    width: max-content;
+}
+
+.createForm > form > .chooseTag > div > input {
+    border: none;
+    outline: none;
+    box-shadow: 0 0 1px #fff;
+    color: white;
+    background-color: #1A1A1B;
+    /* width: 100%; */
+    padding: .4em 1em;
+}
+
+.createForm > form > .chooseTag > div >#tagType {
+    width: 50px;
+}
+
+.createForm > form >.ButtonGroup > button {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: .8em;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    background-color: #1A1A1B;
+    color: #D7DADC;
+    font-weight: 600;
+    border: none;
+    outline: none;
+    border: .2px solid #fff5;
+    margin-bottom: 0;
+}
+.focusClass {
+    border-bottom: 3px solid white !important;
+}
+
+.createForm > form > .Postdata {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    width: 100%;
+    background-color: #1A1A1B;
+    /* gap: 0px; */
+    padding: 1em 0;
+}
+
+.createForm > form > .Postdata > div {
+    background-color: #1A1A1B;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 .5em;
+}
+
+.createForm > form > .Postdata > div > input[type=text] {
+    padding: .8em;
+    background: transparent;
+    border: 1px solid #fff2;
+    border-radius: 5px;
+    color: #D7DADC;
+}
+
+.createForm > form > .Postdata > div > .postDatabuttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.createForm > form > .Postdata > div > .postDatabuttons > button {
+    border-radius: 40px;
+    width: fit-content;
+    font-size: 1em;
+    padding: .5em 1em;
+    border: none;
+    outline: none;
+}
+
+.createForm > form > .Postdata > div > .postDatabuttons > button[type=Submit] {
+    background-color: #D7DADC;
+    color: #0004;
+    font-weight: 600;
+    cursor: not-allowed;
+}
+
+.createForm > form > .Postdata > div > .postDatabuttons > button[type=button] {
+    background-color: transparent;
+    color: inherit;
+    border: 1px solid #D7DADC;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.createForm > form > .Postdata > div > .editablediv {
+    /* margin: 0 1em; */
+    width: 100%;
+    height: 250px;
+    border: 1px solid #fff2;
+    border-radius: 5px;
+    overflow: hidden;
+    /* padding: 1em; */
+}
+
+.createForm > form > .Postdata > div > .editablediv > div {
+    margin: 1em;
+    height: 90%;
+    overflow: scroll;
+}
+
+.createForm > form > .Postdata > div > .editablediv > div:focus-visible {
+    border: none;
+    outline: none;
+}
+
+.createForm > form > .Postdata > div > .editablediv > div::-webkit-scrollbar {
+    display: none;
+}

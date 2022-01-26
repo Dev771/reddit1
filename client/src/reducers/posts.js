@@ -1,4 +1,4 @@
-import { CREATE_POST, FETCH_ALL } from '../constants/index';
+import { CREATE_POST, FETCH_ALL, LIKE_POST } from '../constants/index';
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default (posts = [], actions) => {
@@ -7,8 +7,8 @@ export default (posts = [], actions) => {
             return [...posts, actions.payload];
         case FETCH_ALL:
             return actions.payload;
-        // case LIKE_POST:
-        //     return
+        case LIKE_POST:
+            return posts.map((post) => post._id === actions.payload._id ? actions.payload : post);
         default:
             return posts;
     }

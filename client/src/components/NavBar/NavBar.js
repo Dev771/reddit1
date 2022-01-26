@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Reddit from '@material-ui/icons/Reddit'
 import HomeIcon from '@material-ui/icons/HomeRounded';
 import DownArrow from '@material-ui/icons/ArrowDropDownSharp';
@@ -9,12 +9,30 @@ import LiveIcon from "@material-ui/icons/LiveTv"
 import MessageIcon from '@material-ui/icons/MessageOutlined'
 import NotificationIcon from '@material-ui/icons/NotificationsNoneOutlined';
 import AddPostIcon from '@material-ui/icons/Add'
-import DefaultProfilePic from '../assets/ReditDefaultProfile.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Button, Avatar, Badge } from '@material-ui/core';
+import {useDispatch} from 'react-redux';
 
+import { LOGOUT } from '../../constants/index';
 import './Styles.css';
 
 const NavBar = () => {
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [SignInUser, setSignInUser] = useState(JSON.parse(localStorage.getItem('profile')));
+
+    const logout = () => {
+        dispatch({ type: LOGOUT });
+        navigate('/');
+        setSignInUser(null);
+    }
+
+    useEffect(() => {
+        const token = SignInUser?.token;
+        setSignInUser(JSON.parse(localStorage.getItem('profile')));
+    }, [location])
 
     return (
         <nav>
@@ -37,13 +55,22 @@ const NavBar = () => {
                 <span title="Notification"><NotificationIcon /></span>
                 <Link to='/CreatePost' title="Add Post"><AddPostIcon /></Link>
             </div>
-            <div className='Profile'>
-                <div>
-                    <img src={DefaultProfilePic} alt='Profile Pic' />
-                    <span className='userstate'></span>
+            {!SignInUser ? (
+                <div className='Profile'>
+                    <Button component={Link} to='/auth' variant='contained' color='secondary' >Login</Button>
+                    <Button component={Link} to='/auth' variant='contained' color='secondary'>Register</Button>
                 </div>
-                <label>User_Name</label>
-            </div>
+            ) :  (
+                <div className='Profile' onClick={logout}>
+                    {/* <div> */}
+                    <Badge overlap='circular' variant='dot' anchorOrigin={{  vertical: 'bottom', horizontal: 'right'}} color='error' >
+                        <Avatar style={{ width: '30px', height: '30px'}} alt={SignInUser?.result.name} src={SignInUser?.result.imageUrl} >{SignInUser?.result.name.charAt(0)}</Avatar>
+                    </Badge>
+                        {/* <span className='userstate'></span> */}
+                    {/* </div> */}
+                    <label>{SignInUser?.result?.name}</label>
+                </div>
+            )}
         </nav>
     )
 }

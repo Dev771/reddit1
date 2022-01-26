@@ -26,49 +26,50 @@ const Home = () => {
     }, [dispatch]);
     
     return (
-        
-        <div className='HomePage'>
-            <div></div>
-            <div className='PostSide'>
-                <div className='SearchPost'>
-                    <img src={DefaultProfilePic} alt='profilePic' />
-                    <input type="search" placeholder='Search Post'></input>
-                    <span title="Create Media Post"><GallaryIcon /></span>
-                    <span title="Add Link"><Link /></span>
-                </div>
-                <div className='PostPrefrence'>
-                    <div>
-                        <span title='Best' className='active'><BestIcon /> Best</span>
-                        <span title='Hot'><HotIcon /> Hot</span>
-                        <span title='New'><NewIcon /> New</span>
-                        <span title='Top'><ToptierIcon /> Top</span>
-                        <span><OptionAltIcon /></span>
+        <>
+            <div className='HomePage'>
+                <div></div>
+                <div className='PostSide'>
+                    <div className='SearchPost'>
+                        <img src={DefaultProfilePic} alt='profilePic' />
+                        <input type="search" placeholder='Search Post'></input>
+                        <span title="Create Media Post"><GallaryIcon /></span>
+                        <span title="Add Link"><Link /></span>
                     </div>
-                    {/* <div>
-                        <span><TableIcon /></span>
-                    </div> */}
+                    <div className='PostPrefrence'>
+                        <div>
+                            <span title='Best' className='active'><BestIcon /> Best</span>
+                            <span title='Hot'><HotIcon /> Hot</span>
+                            <span title='New'><NewIcon /> New</span>
+                            <span title='Top'><ToptierIcon /> Top</span>
+                            <span><OptionAltIcon /></span>
+                        </div>
+                        {/* <div>
+                            <span><TableIcon /></span>
+                        </div> */}
+                    </div>
+                    {!posts.length ? <Loading /> : (
+                        posts.map((post) => (
+                            <Posts post={post} key={post._id} />
+                        ))
+                    )}
+                    
                 </div>
-                {!posts.length ? <Loading /> : (
-                    posts.map((post) => (
-                        <Posts post={post} key={post._id} />
-                    ))
-                )}
-                
-            </div>
-            <div className='CommunityPost'>
-                <div className='RecTag'>
-                    <div style={{ backgroundImage: `url(${DefaultProfilePic})`}} className='RecTagTitle'>Home</div>
-                    <div className='RecTagList'>
-                        <div className='TagListTab'>
-                            1. <UpArrowIcon /> 
-                            <span className='tagIcon'></span>
-                            r/tagName
+                <div className='CommunityPost'>
+                    <div className='RecTag'>
+                        <div style={{ backgroundImage: `url(${DefaultProfilePic})`}} className='RecTagTitle'>Home</div>
+                        <div className='RecTagList'>
+                            <div className='TagListTab'>
+                                1. <UpArrowIcon /> 
+                                <span className='tagIcon'></span>
+                                r/tagName
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div></div>
             </div>
-            <div></div>
-        </div>
+        </>
     )
 }
 
