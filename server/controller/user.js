@@ -30,13 +30,13 @@ export const signUp = async (req, res) => {
         const User = await userSchema.findOne({ email });
 
         if(User) return res.status(400).json({ message: "User Already Exists"});
-
+        
         if(password !== confirmPassword) return res.status(400).json({ message: "Password Doesnt Match"});
-
+        
         const hashedPassword = await bcrypt.hash(password, 12);
-
+        
         const result = await userSchema.create({ email, password: hashedPassword, name: `${firstName} ${lastName}`})
-
+        
         const token = jwt.sign({ email: result.email, id: result._id}, 'test', { expiresIn: '1h'});
 
         res.status(200).json({ result, token});

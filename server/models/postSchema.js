@@ -7,6 +7,8 @@ const postSchema = mongoose.Schema({
     creatorEmail: String,
     tags_name: String,
     tags_type: String,
+    post_Type: String,
+    post_Texts: String,
     likes: {
         type: [String],
         default: [],

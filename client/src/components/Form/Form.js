@@ -8,14 +8,15 @@ import { getTags } from '../../actions/tag';
 import { ButtonGroup, TextField } from '@material-ui/core';
 import { PostAdd, Photo, Link, List } from '@material-ui/icons';
 import { Autocomplete } from '@material-ui/lab';
+import ContentEditable from 'react-contenteditable';
 import './Styles.css';
 import useStyles from './Styles';
 
 const Form = () => {
-    const [postData, setPostData] = useState({ title: '', LocImage: '', tags_name: '', tags_type: '', creator: '', creatorEmail: ''});
+    const [activebutton, setactiveButton] = useState('Post');
+    const [postData, setPostData] = useState({ title: '', LocImage: '', tags_name: '', tags_type: '', creator: '', creatorEmail: '', post_Texts: '', post_Type: activebutton});
     const dispatch = useDispatch();
     const tags = useSelector((state) => state.tags);
-    const [activebutton, setactiveButton] = useState('Post');
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem('profile'));
     const classes = useStyles();
@@ -25,22 +26,20 @@ const Form = () => {
     }, [dispatch]);
     
     const clear = () => {
-        setPostData({title: '', LocImage: '', tags_name: '', tags_type: '', creator: '', creatorEmail: '' });
+        setPostData({title: '', LocImage: '', tags_name: '', tags_type: '', creator: '', creatorEmail: '', post_Type: activebutton, post_Texts: '' });
     }
 
-    const handleSubmit = async (e) =>  {
+    const handleSubmit = (e) =>  {
         e.preventDefault();
 
-        dispatch(createPost({...postData, creator: user?.result?.name, creatorEmail: user?.result?.email}));
+        dispatch(createPost({...postData, creator: user?.result?.name, creatorEmail: user?.result?.email, post_Type: activebutton}, navigate));
         clear();
-
-        navigate('/');
     }
 
 
     return (
         <div className='createForm'>
-            <form autoComplete='off' noValidate onSubmit={handleSubmit}>
+            <form autoComplete='off' onSubmit={handleSubmit}>
                 <div className='CreatePostTop'>
                     <label>Create a Post</label>
                     <a href='/#'>draft 0</a>
@@ -52,21 +51,22 @@ const Form = () => {
                         className={classes.Autocomplete}
                         classes={classes}
                         options={tags}
+                        onSelect={(e) => setPostData({...postData, tags_name: e.target.value})}
                         renderInput={params => (
-                            <TextField className={classes.textfield} {...params} label="Post Type" variant="outlined" />
+                            <TextField required className={classes.textfield}  {...params} label="Post Type" variant="outlined" />
                         )}
                         onChange={(e) => setPostData({...postData, tagname: e.target.value})}
                         getOptionLabel={option => option.name}
-                        style={{ width: 'fit-content', border: '1px solid #fff2', background: '#1A1A1B', borderRadius: '5px' }}
+                        style={{ width: '130px', border: '1px solid #fff2', background: '#1A1A1B', borderRadius: '5px' }}
                     />
                     <Autocomplete
                         id="Tags"
                         options={tags}
                         autoHighlight
+                        onSelect={(e) => setPostData({...postData, tags_type: e.target.value})}
                         className={classes.Autocomplete}
-                        onChange={(e) => setPostData({...postData, tagname: e.target.value})}
                         renderInput={params => (
-                            <TextField className={classes.textfield} style={{fontSize: '10px'}} {...params} label="Tag Name"  variant="outlined" />
+                            <TextField required className={classes.textfield} style={{fontSize: '10px'}} {...params} label="Tag Name"  variant="outlined" />
                         )}
                         style={{ width: 270, border: '1px solid #fff2', background: '#1A1A1B', borderRadius: '5px' }}
                         getOptionLabel={option => option.tagtype}
@@ -82,14 +82,17 @@ const Form = () => {
                     <div>
                         {activebutton === 'Post' ? (
                             <>
-                                <input type='text' placeholder='Enter Title' onChange={(e) => setPostData({...postData, title: e.target.value})} />
+                                <input type='text' required placeholder='Enter Title' onChange={(e) => setPostData({...postData, title: e.target.value})} />
+                                <ContentEditable
+                                    required
+                                />
                                 <div className='editablediv'>
-                                    <div contentEditable></div>
+                                    <div contentEditable ></div>
                                 </div>
                             </>
                         ) : activebutton === 'Images' ? (
                             <>
-                                <input type='text' placeholder='Enter Title' onChange={(e) => setPostData({...postData, title: e.target.value})} />
+                                <input type='text' required placeholder='Enter Title' onChange={(e) => setPostData({...postData, title: e.target.value})} />
                                 <FileBase type='file' multiple={false} onDone={({base64}) => setPostData({...postData, LocImage: base64})} />
                             </>
                         ) : activebutton === 'Link' ? (

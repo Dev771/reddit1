@@ -12,6 +12,7 @@ import AddPostIcon from '@material-ui/icons/Add'
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button, Avatar, Badge } from '@material-ui/core';
 import {useDispatch} from 'react-redux';
+import decode from 'jwt-decode';
 
 import { LOGOUT } from '../../constants/index';
 import './Styles.css';
@@ -23,16 +24,25 @@ const NavBar = () => {
     const location = useLocation();
     const [SignInUser, setSignInUser] = useState(JSON.parse(localStorage.getItem('profile')));
 
+
+    
+    useEffect(() => {
+        const token = SignInUser?.token;
+        
+        if(token) {
+            const decodeToken = decode(token);
+            
+            if(decodeToken.exp * 1000 < new Date().getTime()) logout();
+        }
+        
+        setSignInUser(JSON.parse(localStorage.getItem('profile')));
+    }, [location]);
+    
     const logout = () => {
         dispatch({ type: LOGOUT });
         navigate('/');
         setSignInUser(null);
     }
-
-    useEffect(() => {
-        const token = SignInUser?.token;
-        setSignInUser(JSON.parse(localStorage.getItem('profile')));
-    }, [location])
 
     return (
         <nav>
@@ -57,8 +67,8 @@ const NavBar = () => {
             </div>
             {!SignInUser ? (
                 <div className='Profile'>
-                    <Button component={Link} to='/auth' variant='contained' color='secondary' >Login</Button>
-                    <Button component={Link} to='/auth' variant='contained' color='secondary'>Register</Button>
+                    <Button component={Link} to='/auth/SignIn' variant='contained' color='secondary' >Login</Button>
+                    <Button component={Link} to='/auth/SignUp' variant='contained' color='secondary'>Register</Button>
                 </div>
             ) :  (
                 <div className='Profile' onClick={logout}>

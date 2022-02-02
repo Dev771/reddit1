@@ -3,7 +3,7 @@ import DefaultProfilePic from '../assets/ReditDefaultProfile.png';
 import { useDispatch } from 'react-redux';
 
 import { likePost } from '../../actions/posts';
-import {ArrowUpwardOutlined, ArrowDownwardOutlined, BookmarkBorderOutlined } from '@material-ui/icons';
+import {ArrowUpwardOutlined, ArrowDownwardOutlined, BookmarkBorderOutlined, PostAddRounded } from '@material-ui/icons';
 import CommentIcon from '@material-ui/icons/CommentOutlined';
 import { Share } from '@material-ui/icons';
 import { Player } from 'video-react';
@@ -17,12 +17,8 @@ const Posts = ({post}) => {
     
     const isLike = (state) => {
         if(state === 'liked') {
-            setisLiked(!isLiked);
-            setIsDisLiked(false);
             dispatch(likePost(post._id, state));
         } else {
-            setisLiked(false);
-            setIsDisLiked(!isDisliked);
             dispatch(likePost(post._id, state));
         }
     }
@@ -37,6 +33,9 @@ const Posts = ({post}) => {
             setisLiked(true);
         } else if(post.dislikes.find((dislike) => dislike === (user?.result?.googleId || user?.result?._id))) {
             setIsDisLiked(true);
+            setisLiked(false);
+        } else if(!post.likes.find((like) => like === (user?.result?._id || user?.result?.googleId)) && !post.dislikes.find((dislike) => dislike === (user?.result?.googleId || user?.result?._id))) {
+            setIsDisLiked(false);
             setisLiked(false);
         }
     }, [post.dislikes, post.likes, user?.result?._id, user?.result?.googleId]);
@@ -58,17 +57,19 @@ const Posts = ({post}) => {
                     {post.title}
                 </div>
                 <div className='PostDetails'>
-                    {post.LocImage.split('/')[0] === 'data:image' ? (
-                        <img src={post.LocImage} alt={post.title} />
-                    ) : post.LocImage.split('/')[0] === 'data:video' ? (
+                    {post.post_Type === 'Images' && post.LocImage.split('/')[0] === 'data:image' ? (
+                        <img loading='lazy' src={post.LocImage} alt={post.title} />
+                    ) : post.post_Type === 'Images' && post.LocImage.split('/')[0] === 'data:video' ? (
                         <>
                             <video width="100%" height='100%' autoPlay={true} muted={muted} loop>
                                 <source src={post.LocImage} type={post.LocImage.split(':')[1].split(';')[0]} />
                             </video>
                             <button onClick={mutedchange}>Muted</button>
                         </>
+                    ) : post.post_Type === 'Post' && post.LocImage === '' ? (
+                        <label>{post.post_Texts}</label>
                     ) : (
-                        <label>Text</label>
+                        <label>Hello</label>
                     )}
                 </div>
                 <div className='PostAction'>

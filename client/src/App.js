@@ -16,10 +16,10 @@ const App = () => {
                 <Route path='/' exact element={<Home />} />
                 <Route path='/CreatePost' exact element={<Form />} />
                 <Route path='/tag' exact element={<Tags />} />
-                <Route path='/auth' exact element={<Auth />} />
+                <Route path='/auth/:action' exact element={<Auth />} />
             </Routes>
         </BrowserRouter>
     )
 }
 
-export default App
+export default App;

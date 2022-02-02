@@ -23,7 +23,6 @@ const input = ({name, half, autoFocus, label, type, handleChange, handleShowPass
                         </InputAdornment>
                     )
                 } : null}  
-                autoComplete='off'
             />
         </Grid>
     );

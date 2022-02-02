@@ -10,20 +10,31 @@ import Input from './input';
 import Icon from './icon';
 import { AUTH } from '../../constants/index';
 import { useNavigate } from 'react-router-dom';
+import  { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { signIn, signUp } from '../../actions/Auth';
 
 const initialState = { firstName: '', lastName: '', email: '', password: '', confirmPassword: ''};
 
 const Auth = () => {
+    const { action } = useParams();
     const classes = useStyles();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [isSignUp, setisSignUp] = useState(true);
+    const [isSignUp, setisSignUp] = useState(action === 'SignUp' ? true : false);
     const [formData, setFormData] = useState(initialState);
     const [showPassword, setShowPassword] = useState(false);
+    const location = useLocation();
+
+    
 
     const switchState = () => {
         setisSignUp(!isSignUp);
+        if(!isSignUp) {
+            navigate('/auth/SignUp');
+        } else {
+            navigate('/auth/SignIn');
+        }
     }
 
     const handleSubmit = (e) => {
@@ -56,6 +67,7 @@ const Auth = () => {
             console.log(error);
         }
     }
+
     const googleFailure = () => {
         console.log("Google Sign In Was A Failure Just Like U!!!!, Try Again Dumb Ass");
     }

@@ -23,7 +23,7 @@ const Home = () => {
 
     useEffect(() => {
         dispatch(getPost());
-    }, [dispatch]);
+    }, [posts, dispatch]);
     
     return (
         <>
@@ -44,12 +44,9 @@ const Home = () => {
                             <span title='Top'><ToptierIcon /> Top</span>
                             <span><OptionAltIcon /></span>
                         </div>
-                        {/* <div>
-                            <span><TableIcon /></span>
-                        </div> */}
                     </div>
                     {!posts.length ? <Loading /> : (
-                        posts.map((post) => (
+                        posts.reverse().map((post) => (
                             <Posts post={post} key={post._id} />
                         ))
                     )}
